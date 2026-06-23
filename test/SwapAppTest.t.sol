@@ -43,8 +43,9 @@ contract SwapAppTest is Test {
     function testSwapTokensCorrectly() public {
         vm.startPrank(user);
         uint256 amountIn = 100e6; // smart contract of USDT in arbitrum has 6 decimals
-        uint256 amountOutMin = ((amountIn * swapApp.getFeeBasisPoints()) / swapApp.getPercentageBasis()) - 1e6; // smart contract of DAI has 18 decimals in arbitrum
         uint256 fee = (amountIn * swapApp.getFeeBasisPoints()) / swapApp.getPercentageBasis();
+        uint256 amountOutMin = (((amountIn - fee) * 1e18) / 1e6) - 1e18; // smart contract of DAI has 18 decimals in arbitrum
+        
 
         IERC20(USDT).approve(address(swapApp), amountIn);
         uint256 _deadline = block.timestamp + 4 minutes;
@@ -54,9 +55,11 @@ contract SwapAppTest is Test {
 
         uint256 usdtBalanceBefore = IERC20(USDT).balanceOf(user);
         uint256 daiBalanceBefore = IERC20(DAI).balanceOf(user);
+        console2.log("DAI Before: ", daiBalanceBefore);
         swapApp.swapTokens(amountIn, amountOutMin, _path, _deadline);
         uint256 usdtBalanceAfter = IERC20(USDT).balanceOf(user);
         uint256 daiBalanceAfter = IERC20(DAI).balanceOf(user);
+        console2.log("DAI After: ", daiBalanceAfter);
 
         assert(usdtBalanceAfter == usdtBalanceBefore - amountIn);
         assert(daiBalanceAfter > daiBalanceBefore);

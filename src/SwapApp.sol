@@ -28,13 +28,13 @@ contract SwapApp {
         uint256 fee = (_amountIn * getFeeBasisPoints()) / getPercentageBasis();
         uint256 amountIn = _amountIn - fee;
 
-        IERC20(_path[0]).safeTransferFrom(msg.sender, address(this), amountIn);
+        IERC20(_path[0]).safeTransferFrom(msg.sender, address(this), _amountIn);
 
         IERC20(_path[0]).approve(s_V2Router02Address, amountIn);
 
         uint[] memory amountOut = IV2Router02(s_V2Router02Address).swapExactTokensForTokens(amountIn, _amountOutMin, _path, msg.sender, _deadline);
 
-        IERC20(_path[0]).safeTransferFrom(msg.sender, s_FeeReceiver, fee);
+        IERC20(_path[0]).safeTransfer(s_FeeReceiver, fee);
         
         s_totalFeeReceived += fee;
         
