@@ -22,27 +22,11 @@ When a user initiates a transaction, the `SwapApp` contract calculates a predefi
 
 ### Architecture Diagram
 
-```mermaid
-sequenceDiagram
-    actor User
-    participant SwapApp as SwapApp.sol
-    participant Uniswap as IV2Router02
-    participant Vault as Fee Receiver
-    
-    User->>SwapApp: swapTokens(amountIn, amountOutMin, path, deadline)
-    Note over SwapApp: Calculates Fee (e.g., 2.5%)
-    SwapApp->>SwapApp: safeTransferFrom(User -> SwapApp, amountIn)
-    SwapApp->>Uniswap: approve(Router, amountIn - fee)
-    SwapApp->>Uniswap: swapExactTokensForTokens(amountIn - fee)
-    Uniswap-->>User: Transfers Swapped Tokens (e.g., DAI)
-    SwapApp->>Vault: safeTransfer(fee)
-    SwapApp-->>User: emit SwapTokens(...)
+![Project Diagram](./images/diagram.png)
 
-File Links:
+[SwapApp.sol](./src/SwapApp.sol) - Main Application Logic
 
-SwapApp.sol - Main Application Logic
-
-IV2Router02.sol - Uniswap Router Interface
+[IV2Router02.sol](./src/IV2Router02.sol) - Uniswap Router Interface
 
 💻 Technical Docs
 The primary interaction point of the application is the swapTokens function. It strictly handles state transfers using SafeERC20, dynamically calculates the exact fee via basis points, and interfaces with the underlying Uniswap liquidity.
