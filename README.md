@@ -12,7 +12,7 @@ It allows users to exchange ERC20 tokens (e.g., USDT for DAI) effortlessly while
 **Key Technical Highlights:**
 * **Solidity `^0.8.30`:** Leveraging the latest compiler features for maximum security and gas efficiency.
 * **OpenZeppelin Contracts:** Utilizing standard `IERC20` and `SafeERC20` implementations to prevent common attack vectors and handle non-standard ERC20 token interactions flawlessly.
-* **Foundry Framework:** Complete with high-speed fuzz testing, state assertions, and mainnet-fork simulations via Arbitrum RPC.
+* **Foundry Framework:** Complete with high-speed testing, state assertions, and mainnet-fork simulations via Arbitrum RPC.
 
 ---
 
@@ -102,11 +102,18 @@ Uniswap swaps the 97.5 USDT for DAI and sends that DAI directly to the User's wa
 
 SwapApp sends the 2.5 USDT fee to the configured Fee Receiver.
 
-🧪 Testing
-(Provide testing instructions or commands here)
+
+⬆️ Installation
+forge install OpenZeppelin/openzeppelin-contracts foundry-rs/forge-std
+
+🧪 Testing (fork test in arbitrum, in case changing network modify "" for an rpc endpoint of the desired network and change the next address:)
+- SwapAppScript.sol -> addressUniSwapRouterV2;
+
+Testing command:
+- forge test -vvvv --fork-url https://arb1.arbitrum.io/rpc
 
 📊 Coverage
-(Provide coverage instructions or commands here)
+forge coverage --fork-url https://arb1.arbitrum.io/rpc
 
 📜 Contract Address
 (Provide deployed contract addresses here)
