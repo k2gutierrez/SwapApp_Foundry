@@ -83,17 +83,17 @@ The User wants to swap 100 USDT. Because USDT is an ERC20 standard token, the us
 
 - Step 3: Execute Swap
 The user calls swapTokens on the SwapApp contract, passing in:
-- - _amountIn: 100,000,000 (100 USDT, properly scaled to 6 decimals).
-- - _amountOutMin: Minimum acceptable DAI out (to prevent sandwich attacks/slippage).
-- - _path: [USDT_ADDRESS, DAI_ADDRESS].
-- - _deadline: Unix timestamp for transaction expiration.
+  - _amountIn: 100,000,000 (100 USDT, properly scaled to 6 decimals).
+  - _amountOutMin: Minimum acceptable DAI out (to prevent sandwich attacks/slippage).
+  - _path: [USDT_ADDRESS, DAI_ADDRESS].
+  - _deadline: Unix timestamp for transaction expiration.
 
 - Step 4: Under the Hood execution
-- - SwapApp calculates a 2.5 USDT fee from the inputs.
-- - SwapApp safely pulls 100 USDT from the User's wallet into itself.
-- - SwapApp approves the remaining 97.5 USDT to the Uniswap Router.
-- - Uniswap swaps the 97.5 USDT for DAI and sends that DAI directly to the User's wallet.
-- - SwapApp sends the 2.5 USDT fee to the configured Fee Receiver.
+  - SwapApp calculates a 2.5 USDT fee from the inputs.
+  - SwapApp safely pulls 100 USDT from the User's wallet into itself.
+  - SwapApp approves the remaining 97.5 USDT to the Uniswap Router.
+  - Uniswap swaps the 97.5 USDT for DAI and sends that DAI directly to the User's wallet.
+  - SwapApp sends the 2.5 USDT fee to the configured Fee Receiver.
 
 
 ⬆️ Installation
