@@ -34,41 +34,41 @@ The primary interaction point of the application is the swapTokens function. It 
 swapTokens
 File: src/SwapApp.sol
 
-Solidity
-function swapTokens(
-    uint256 _amountIn, 
-    uint256 _amountOutMin, 
-    address[] memory _path, 
-    uint256 _deadline
-) external {
-    
-    // 1. Calculate the fee based on constant basis points
-    uint256 fee = (_amountIn * getFeeBasisPoints()) / getPercentageBasis();
-    uint256 amountIn = _amountIn - fee;
+    Solidity
+    function swapTokens(
+        uint256 _amountIn, 
+        uint256 _amountOutMin, 
+        address[] memory _path, 
+        uint256 _deadline
+    ) external {
+        
+        // 1. Calculate the fee based on constant basis points
+        uint256 fee = (_amountIn * getFeeBasisPoints()) / getPercentageBasis();
+        uint256 amountIn = _amountIn - fee;
 
-    // 2. Safely transfer the full amount from the user to this contract
-    IERC20(_path[0]).safeTransferFrom(msg.sender, address(this), _amountIn);
+        // 2. Safely transfer the full amount from the user to this contract
+        IERC20(_path[0]).safeTransferFrom(msg.sender, address(this), _amountIn);
 
-    // 3. Approve the Uniswap V2 Router to spend the post-fee amount
-    IERC20(_path[0]).approve(s_V2Router02Address, amountIn);
+        // 3. Approve the Uniswap V2 Router to spend the post-fee amount
+        IERC20(_path[0]).approve(s_V2Router02Address, amountIn);
 
-    // 4. Execute the swap via Uniswap V2 Router
-    uint[] memory amountOut = IV2Router02(s_V2Router02Address).swapExactTokensForTokens(
-        amountIn, 
-        _amountOutMin, 
-        _path, 
-        msg.sender, 
-        _deadline
-    );
+        // 4. Execute the swap via Uniswap V2 Router
+        uint[] memory amountOut = IV2Router02(s_V2Router02Address).swapExactTokensForTokens(
+            amountIn, 
+            _amountOutMin, 
+            _path, 
+            msg.sender, 
+            _deadline
+        );
 
-    // 5. Route the accumulated fee to the designated receiver vault
-    IERC20(_path[0]).safeTransfer(s_FeeReceiver, fee);
-    
-    s_totalFeeReceived += fee;
-    
-    // 6. Emit on-chain logging event
-    emit SwapTokens(_path[0], _path[_path.length - 1], _amountIn, amountOut[amountOut.length - 1]);
-}
+        // 5. Route the accumulated fee to the designated receiver vault
+        IERC20(_path[0]).safeTransfer(s_FeeReceiver, fee);
+        
+        s_totalFeeReceived += fee;
+        
+        // 6. Emit on-chain logging event
+        emit SwapTokens(_path[0], _path[_path.length - 1], _amountIn, amountOut[amountOut.length - 1]);
+    }
 
 🚀 Execution Example
 Here is a step-by-step example of how a user interacts with the SwapApp to exchange USDT for DAI.
