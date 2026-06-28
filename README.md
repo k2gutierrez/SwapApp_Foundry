@@ -34,7 +34,7 @@ The primary interaction point of the application is the swapTokens function. It 
 swapTokens
 File: src/SwapApp.sol
 
-    Solidity
+```Solidity
     function swapTokens(
         uint256 _amountIn, 
         uint256 _amountOutMin, 
@@ -69,52 +69,59 @@ File: src/SwapApp.sol
         // 6. Emit on-chain logging event
         emit SwapTokens(_path[0], _path[_path.length - 1], _amountIn, amountOut[amountOut.length - 1]);
     }
+```
 
 🚀 Execution Example
 Here is a step-by-step example of how a user interacts with the SwapApp to exchange USDT for DAI.
 
-Step 1: Setup & Deploy
+- Step 1: Setup & Deploy
 The contract is deployed onto the network. During deployment, the s_V2Router02Address (Uniswap Router) and the s_FeeReceiver (e.g., a project's multisig treasury) are configured.
 Current Fee is configured to 2.5% (25 / 1000 basis points).
 
-Step 2: User Approval
+- Step 2: User Approval
 The User wants to swap 100 USDT. Because USDT is an ERC20 standard token, the user must first call approve() on the USDT contract directly, granting the SwapApp contract permission to move their 100 USDT.
 
-Step 3: Execute Swap
+- Step 3: Execute Swap
 The user calls swapTokens on the SwapApp contract, passing in:
 
-_amountIn: 100,000,000 (100 USDT, properly scaled to 6 decimals).
+-- _amountIn: 100,000,000 (100 USDT, properly scaled to 6 decimals).
 
-_amountOutMin: Minimum acceptable DAI out (to prevent sandwich attacks/slippage).
+-- _amountOutMin: Minimum acceptable DAI out (to prevent sandwich attacks/slippage).
 
-_path: [USDT_ADDRESS, DAI_ADDRESS].
+-- _path: [USDT_ADDRESS, DAI_ADDRESS].
 
-_deadline: Unix timestamp for transaction expiration.
+-- _deadline: Unix timestamp for transaction expiration.
 
-Step 4: Under the Hood execution
+- Step 4: Under the Hood execution
 
-SwapApp calculates a 2.5 USDT fee from the inputs.
+-- SwapApp calculates a 2.5 USDT fee from the inputs.
 
-SwapApp safely pulls 100 USDT from the User's wallet into itself.
+-- SwapApp safely pulls 100 USDT from the User's wallet into itself.
 
-SwapApp approves the remaining 97.5 USDT to the Uniswap Router.
+-- SwapApp approves the remaining 97.5 USDT to the Uniswap Router.
 
-Uniswap swaps the 97.5 USDT for DAI and sends that DAI directly to the User's wallet.
+-- Uniswap swaps the 97.5 USDT for DAI and sends that DAI directly to the User's wallet.
 
-SwapApp sends the 2.5 USDT fee to the configured Fee Receiver.
+-- SwapApp sends the 2.5 USDT fee to the configured Fee Receiver.
 
 
 ⬆️ Installation
+```Bash
 forge install OpenZeppelin/openzeppelin-contracts foundry-rs/forge-std
+```
 
 🧪 Testing (fork test in arbitrum, in case changing network modify "" for an rpc endpoint of the desired network and change the next address:)
 - SwapAppScript.sol -> addressUniSwapRouterV2;
 
 Testing command:
-- forge test -vvvv --fork-url https://arb1.arbitrum.io/rpc
+```Bash
+forge test -vvvv --fork-url https://arb1.arbitrum.io/rpc
+```
 
 📊 Coverage
+```Bash
 forge coverage --fork-url https://arb1.arbitrum.io/rpc
+```
 
 📜 Contract Address
 (Provide deployed contract addresses here)
