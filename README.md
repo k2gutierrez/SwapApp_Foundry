@@ -69,6 +69,7 @@ function swapTokens(
     // 6. Emit on-chain logging event
     emit SwapTokens(_path[0], _path[_path.length - 1], _amountIn, amountOut[amountOut.length - 1]);
 }
+
 🚀 Execution Example
 Here is a step-by-step example of how a user interacts with the SwapApp to exchange USDT for DAI.
 
