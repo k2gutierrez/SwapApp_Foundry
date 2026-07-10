@@ -5,6 +5,11 @@ import {IV2Router02} from "./IV2Router02.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
+/**
+ * @title Swap App
+ * @author Carlos Gutiérrez
+ * @notice project to swap tokens
+ */
 contract SwapApp {
 
     // Calling SafeERC20 library to use in the IERC20 interface
